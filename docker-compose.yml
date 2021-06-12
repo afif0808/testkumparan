@@ -1,0 +1,25 @@
+version: '3.0'
+
+services:
+  mongo:
+    image : mongo:4.4.6-bionic
+    ports:
+        - '27017:27017'
+    volumes:
+        - ./mongodata:/data/db
+  redis:
+    image: redis:alpine
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - .:/media/muafafif/data/goprojects/github.com/afif0808/testkumparan
+      - ./pkg:/go/pkg
+    working_dir: /media/muafafif/data/goprojects/github.com/afif0808/testkumparan/app
+    command: go run main.go
+    links:
+      - redis
+    environment:
+      REDIS_URL: redis:6379
+    
